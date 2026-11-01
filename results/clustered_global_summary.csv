@@ -1,0 +1,2 @@
+n_total_observations,n_clusters_questions,n_languages,mean_diff_hybrid,se_unpaired_naive_hybrid,se_paired_unclustered_hybrid,se_paired_clustered_miller_hybrid,ratio_clustered_to_paired_hybrid,z_paired_unclustered_hybrid,z_paired_clustered_hybrid,mean_diff_win_hybrid,se_unpaired_naive_win,se_paired_unclustered_win,se_paired_clustered_miller_win,ratio_clustered_to_paired_win,z_paired_unclustered_win,z_paired_clustered_win
+11000,500,22,0.2191,0.907,0.5741,1.6049,2.7955,0.3816,0.1365,0.2709,0.9107,0.5771,1.6134,2.7956,0.4694,0.1679

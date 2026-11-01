@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS / IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Heavy model weights / raw datasets (> 100 MB rule protection)
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.parquet
+*.arrow
+data/raw/
