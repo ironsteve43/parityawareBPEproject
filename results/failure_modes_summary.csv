@@ -1,0 +1,6 @@
+category,language,classic_token_count,parity_token_count,segmentation_ratio,token_overhead_pct,classic_chars_per_token,parity_chars_per_token
+Code Syntax (Python),Python / EN,16,26,1.62,62.5,4.19,2.58
+Mathematical / Numeric,Math / Digits,19,37,1.95,94.7,2.21,1.14
+German Compound Nouns,German [High],12,35,2.92,191.7,7.5,2.57
+English STEM Terminology,English [High],10,43,4.3,330.0,7.5,1.74
+Structured JSON / API,JSON / Web,23,52,2.26,126.1,3.26,1.44
