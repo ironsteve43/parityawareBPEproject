@@ -15,6 +15,8 @@
 Showing that downstream differences are statistically indistinguishable from zero (p>0.05) does not prove equivalence unless the evaluation possesses sufficient statistical power to detect meaningful regressions. Following Miller (Section~5)~\cite{miller2024adding} and cluster-inference theory~\cite{abadie2022when}, we compute the Minimum Detectable Effect (MDE) at $80\%$ power (1-=0.80,z0.80=0.842) and two-sided =0.05 (z0.975=1.960), along with the required sample size Nreq to detect a target accuracy drop :
 \begin{equation}
 \mathrm{MDE} = (z_{1-\alpha/2} + z_{1-\beta})\,\mathrm{SE}_{A-B,\mathrm{clustered}}, \quad
+\end{equation}
+\begin{equation}
 N_{\mathrm{req}}(\Delta) = \frac{2(z_{1-\alpha/2} + z_{1-\beta})^2 (1-\rho)\,p(1-p)\,\mathrm{DEFF}}{\Delta^2}.
 \label{eq:mde_power}
 \end{equation}
