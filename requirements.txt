@@ -1,0 +1,22 @@
+# =============================================================================
+# Parity-Aware BPE Audit & Economic Impact Evaluation
+# Dependencies for complete reproduction across CPU / Google Colab
+# =============================================================================
+
+# Core scientific stack
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Visualization (ACM sigconf publication figures: Figures 1, 2, 3)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# NLP & Tokenization (Parity-Aware BPE & Hugging Face tokenizers)
+tokenizers>=0.13.0
+transformers>=4.30.0
+sentencepiece>=0.1.99
+
+# Utilities
+requests>=2.28.0
+tqdm>=4.64.0

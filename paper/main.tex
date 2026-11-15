@@ -1,30 +1,45 @@
-
 \documentclass[sigconf,nonacm]{acmart}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{microtype}
 
-\title{Auditing Parity-Aware BPE: Statistical Power, Morphological Failure Modes, and Global API Economics}
+\title{The Hidden Cost of Parity: Statistical Audit and Global Net Economic Impact of Parity-Aware BPE}
 
 \author{Joao Vitor de Carvalho Silva}
-\affiliation{\institution{Universidade}\country{Brazil}}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{joaovitor@dcc.ufmg.br}
+
 \author{Lucas de Oliveira Ferreira}
-\affiliation{\institution{Universidade}\country{Brazil}}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{lucas.ferreira@dcc.ufmg.br}
+
 \author{Mariana Assis Ramos}
-\affiliation{\institution{Universidade}\country{Brazil}}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{mariana.assis@dcc.ufmg.br}
+
+\begin{abstract}
+Parity-Aware Byte-Pair Encoding (PA-BPE) aims to mitigate cross-lingual inequities by dynamically reallocating subword merges to maximize the compression of disadvantaged scripts, claiming up to $89\%$ lower tokenization inequality without downstream task degradation. In this paper, we conduct an independent empirical, statistical, and economic audit of PA-BPE, combining the authors' codebase with the super-population statistical framework of Miller (2024). First, applying question-level pairing and cross-lingual clustered standard errors to downstream benchmarks reveals that nominal performance variations are statistically indistinguishable from zero ($p > 0.05$ across all 22 languages; clustering inflates global uncertainty by $2.80\times$). Second, statistical power analysis demonstrates that $100\%$ of the evaluated benchmarks are severely underpowered to detect a $1\%$ or $2\%$ regression (mean MDE $\pm 9.88\%$), while the algorithm induces catastrophic over-segmentation ($+62.5\%$ to $+330\%$) in code, arithmetic, and structured JSON. Third, crossing token counts on FLORES-200 with empirical web traffic distributions (W3Techs) and commercial API pricing (GPT-4o, Claude 3.5 Sonnet, Llama 3.1) uncovers an asymmetric ``English Tax'' ($+\$81.03$ per 1M requests on GPT-4o) that dwarfs multilingual savings ($-\$39.87$), yielding a net commercial surcharge that breaks even only when English traffic drops below $35.5\%$.
+\end{abstract}
 
 \begin{document}
 \maketitle
 
 % --- Pessoa 3: Introdução & Background (Seções 1 e 2) ---
-% \input{pessoa3_intro_bg.tex}
+\input{pessoa3_intro_bg.tex}
 
 % --- Seção 3: Metodologia e Resultados ---
 \section{Methodology \& Empirical Audit}
-\input{pessoa1_sections.tex}   % Seções 3.1 + Fig 1
-\input{pessoa2_sections.tex}   % Seção 3.2 (Fig 2 + Tab 1) e Seção 4 (Limitations)
-% \input{pessoa3_financial.tex} % Seção 3.3 (Fig 3) + Seção 5 (Conclusion)
+\input{pessoa1_sections.tex}      % Seção 3.1: Significância Downstream (Miller 2024) + Fig 1
+\input{pessoa2_power.tex}         % Seção 3.2: Poder Estatístico (MDE) & Falhas + Tab 1, Fig 2
+\input{pessoa3_financial.tex}     % Seção 3.3: Impacto Financeiro Global (FLORES-200 / W3Techs) + Fig 3
 
-% --- Fora do limite de 2 páginas (Referências + Declarações) ---
+% --- Seção 4: Limitações e Ameaças à Validade (Pessoa 2) ---
+\input{pessoa2_limitations.tex}
+
+% --- Seção 5: Conclusão & Declarações Obrigatórias (Pessoa 3) ---
+\input{pessoa3_conclusion.tex}
+
+% --- Referências Bibliográficas (ACM Reference Format) ---
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 

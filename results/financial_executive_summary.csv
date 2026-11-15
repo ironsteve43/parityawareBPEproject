@@ -1,0 +1,6 @@
+metric,GPT_4o,Claude_3_5,Llama_3_1_70B
+English Tax (USD / 1M Reqs),81.03,111.12,12.5
+Multilingual Savings (USD / 1M Reqs),-39.87,-54.69,-6.15
+Net Financial Balance (USD / 1M Reqs),41.16,56.43,6.35
+Break-Even English Traffic Share (%),35.48,35.48,35.48
+Annual Net Surcharge (USD / 1B Reqs),41160.0,56430.0,6350.0

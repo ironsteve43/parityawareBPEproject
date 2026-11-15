@@ -1,0 +1,15 @@
+% =============================================================================
+% PESSOA 2 — SEÇÃO 4 (LIMITATIONS & THREATS TO VALIDITY)
+% Padrão: ACM sigconf (\documentclass[sigconf]{acmart})
+% =============================================================================
+
+\section{Limitations \& Threats to Validity}
+\label{sec:limitations}
+
+Our audit is subject to three primary threats to validity:
+
+\textbf{(1) Parametric Reconstruction of Question-Level Matrices:} Because~\cite{foroutan2026parity} releases summary means and standard errors (SE) rather than raw item-level prediction logs for the 1.4B/3.3B models, our paired ($\rho=0.60$) and intra-cluster ($\rho_{\mathrm{intra}}=0.25, m=4.5$) estimators rely on parametric calibration grounded in Miller's empirical ranges~\cite{miller2024adding} and cluster design-effect formulations~\cite{abadie2022when}. To mitigate this internal validity threat, our sensitivity sweep ($\rho \in [0.0, 0.8]$) confirms that all 22 languages remain non-significant and underpowered across the entire parameter space.
+
+\textbf{(2) Scale of Failure Mode Extraction:} Since pre-trained 128k-merge vocabulary files are not hosted in the official repository~\cite{foroutan2026parity}, our failure-mode audit trains the exact \texttt{Whitespace() + Fair-Max} algorithm on a scaled multilingual and technical corpus. While exact split boundaries at 128k vocabulary scale may shift further into the long tail, the structural mechanism---sacrificing tail merges in dominant scripts to equalize worst-case compression---is an invariant mathematical property of the \textit{fair-max} objective.
+
+\textbf{(3) Construct Validity of Compression Parity:} Finally, evaluating fairness strictly via character-to-token compression ratios (CR) on general prose~\cite{nllb2022no,foroutan2026parity} ignores domain-specific token fertility in code, mathematics~\cite{singh2024tokenization}, and commercial API payloads~\cite{petrov2023language,ahia2023all}.
