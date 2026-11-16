@@ -1,0 +1,53 @@
+\documentclass[sigconf,nonacm]{acmart}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+
+% Micro-spacing adjustments for floats to guarantee strict 2-page fit
+\setlength{\textfloatsep}{5pt plus 1pt minus 1pt}
+\setlength{\floatsep}{5pt plus 1pt minus 1pt}
+\setlength{\intextsep}{5pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowcaptionskip}{2pt plus 1pt minus 1pt}
+
+\title{The Hidden Cost of Parity: Statistical Audit and Global Net Economic Impact of Parity-Aware BPE}
+
+\author{Joao Vitor de Carvalho Silva}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{joaovitor@dcc.ufmg.br}
+
+\author{Lucas de Oliveira Ferreira}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{lucasdeoliveira@dcc.ufmg.br}
+
+\author{Mariana Assis Ramos}
+\affiliation{\institution{Universidade Federal de Minas Gerais}\country{Brazil}}
+\email{mariana.assis@dcc.ufmg.br}
+
+\begin{abstract}
+Parity-Aware Byte-Pair Encoding (PA-BPE) aims to mitigate cross-lingual inequities by dynamically reallocating subword merges to maximize the compression of disadvantaged scripts, claiming up to $89\%$ lower tokenization inequality without downstream degradation. We conduct an independent technical and economic audit combining the official codebase with Miller's (2024) super-population framework. First, question-level pairing and cross-lingual clustered standard errors reveal that nominal downstream performance variations are statistically indistinguishable from zero ($p > 0.05$ across all 22 languages; clustering inflates global uncertainty by $2.80\times$). Second, statistical power analysis demonstrates that $100\%$ of benchmarks are severely underpowered to detect a $1\%$ or $2\%$ regression (mean MDE $\pm 9.88\%$), while the algorithm induces catastrophic over-segmentation ($+62\%$ to $+330\%$) in code, arithmetic, and structured JSON. Third, crossing token counts on FLORES-200 with empirical web traffic distributions (W3Techs) and commercial API pricing (GPT-4o, Claude 3.5, Llama 3.1) uncovers an asymmetric ``English Tax'' ($+\$81.03$/1M requests on GPT-4o) that dwarfs multilingual savings ($-\$39.87$), yielding a net commercial surcharge breaking even only when English traffic drops below $35.5\%$.
+\end{abstract}
+
+\begin{document}
+\maketitle
+
+% --- Pessoa 3: Introdução & Background (Seções 1 e 2) ---
+\input{pessoa3_intro_bg.tex}
+
+% --- Seção 3: Metodologia e Resultados ---
+\section{Methodology \& Empirical Audit}
+\input{pessoa1_sections.tex}      % Seção 3.1: Significância Downstream (Miller 2024) + Fig 1
+\input{pessoa2_power.tex}         % Seção 3.2: Poder Estatístico (MDE) & Falhas + Tab 1
+\input{pessoa3_financial.tex}     % Seção 3.3: Impacto Financeiro Global (FLORES-200 / W3Techs) + Fig 2
+
+% --- Seção 4: Limitações e Ameaças à Validade (Pessoa 2) ---
+\input{pessoa2_limitations.tex}
+
+% --- Seção 5: Conclusão & Declarações Obrigatórias (Pessoa 3) ---
+\input{pessoa3_conclusion.tex}
+
+% --- Referências Bibliográficas (ACM Reference Format) ---
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

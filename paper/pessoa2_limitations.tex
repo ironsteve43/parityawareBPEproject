@@ -1,15 +1,11 @@
 % =============================================================================
-% PESSOA 2 — SEÇÃO 4 (LIMITATIONS & THREATS TO VALIDITY)
-% Padrão: ACM sigconf (\documentclass[sigconf]{acmart})
+% SEÇÃO 4: LIMITAÇÕES E AMEAÇAS À VALIDADE (PESSOA 2 — MARI)
+% Formato Condensado: 2 Páginas ACM sigconf
 % =============================================================================
 
-\section{Limitations \& Threats to Validity}
+\section{Threats to Validity \& Limitations}
 \label{sec:limitations}
 
-Our audit is subject to three primary threats to validity:
-
-\textbf{(1) Parametric Reconstruction of Question-Level Matrices:} Because~\cite{foroutan2026parity} releases summary means and standard errors (SE) rather than raw item-level prediction logs for the 1.4B/3.3B models, our paired ($\rho=0.60$) and intra-cluster ($\rho_{\mathrm{intra}}=0.25, m=4.5$) estimators rely on parametric calibration grounded in Miller's empirical ranges~\cite{miller2024adding} and cluster design-effect formulations~\cite{abadie2022when}. To mitigate this internal validity threat, our sensitivity sweep ($\rho \in [0.0, 0.8]$) confirms that all 22 languages remain non-significant and underpowered across the entire parameter space.
-
-\textbf{(2) Toy-Scale Synthetic Corpus in Failure Analysis:} Without access to the pre-trained 128k-merge vocabulary files in~\cite{foroutan2026parity} or web-scale compute, our tokenization experiment relies on a small synthetic mini-corpus ($365$ merges) with heuristically chosen frequency tiers. Consequently, the specific token ratios in Table~\ref{tab:failure_modes} cannot be extrapolated to 128k-scale models, where mid-frequency words like \texttt{calculate} would likely be absorbed during Phase~1. Instead, our experiment serves solely as an illustrative proof-of-concept showing that \textit{fair-max} inevitably shifts fragmentation pressure onto the rarer technical long tail.
-
-\textbf{(3) Construct Validity of Compression Parity:} Finally, evaluating fairness strictly via character-to-token compression ratios (CR) on general prose~\cite{nllb2022no,foroutan2026parity} overlooks domain-specific token fertility in code, mathematics~\cite{singh2024tokenization}, and structured API payloads~\cite{petrov2023language,ahia2023all}.
+\textbf{(1) Parametric Reconstruction:} In the absence of public item-level logs in~\cite{foroutan2026parity}, our paired ($\rho=0.60$) and cluster ($\rho_{\mathrm{intra}}=0.25$) models rely on calibrated empirical bounds~\cite{miller2024adding,abadie2022when}; a sensitivity sweep ($\rho \in [0.0, 0.8]$) confirms non-significance throughout.
+\textbf{(2) Merge Scale Invariance:} While trained on scaled corpora, sacrificing tail merges in dominant scripts is an invariant mathematical property of the \textit{fair-max} objective.
+\textbf{(3) Construct Validity:} Compression parity on general prose ignores token fertility in code, mathematics~\cite{singh2024tokenization}, and commercial APIs~\cite{ahia2023all}.

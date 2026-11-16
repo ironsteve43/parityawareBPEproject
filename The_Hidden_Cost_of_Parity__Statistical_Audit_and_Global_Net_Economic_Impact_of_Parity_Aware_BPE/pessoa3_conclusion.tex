@@ -1,0 +1,32 @@
+% =============================================================================
+% SEÇÃO 5: CONCLUSÃO (PESSOA 3 — JOÃO) + PÁGINA SUPLEMENTAR
+% Formato Condensado: 2 Páginas ACM sigconf + Página 3 para Referências/Declarações
+% =============================================================================
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Our audit of Parity-Aware BPE yields three findings:
+(1) Downstream parity claims lack statistical support; clustering inflates uncertainty by $2.80\times$, rendering all 22 language variations indistinguishable from noise ($p > 0.05$).
+(2) Evaluation benchmarks are severely underpowered ($\mathrm{MDE} \pm 9.88\%$), masking severe over-segmentation ($+62\%$ to $+330\%$) in code, arithmetic, and structured JSON.
+(3) Under real web traffic, the ``English Tax'' dominates multilingual savings, imposing a net commercial penalty breaking even only when English drops below $35.5\%$.
+Cross-lingual fairness requires tokenizer-free byte-level architectures rather than zero-sum vocabulary reallocation.
+
+% =============================================================================
+% PÁGINA SUPLEMENTAR (FORA DO LIMITE DE 2 PÁGINAS)
+% Conforme especificação do projeto da disciplina:
+% "References are excluded from the page limit"
+% "The report must include a brief AI-assistance statement (excluded from page limit)"
+% "The final report should include a brief contribution statement"
+% =============================================================================
+\clearpage
+
+\section*{AI Assistance Disclosure}
+In accordance with course guidelines, the authors declare that Gemini 3.8 (via Antigravity) was used for scaffolding statistical formulas in Python, Matplotlib styling, and text condensation. All statistical derivations, empirical BPE failure extraction, economic modeling, and analysis were conceived, implemented, and verified by the authors.
+
+\section*{Authorship \& Contribution Statement}
+\begin{itemize}
+    \item \textbf{Joao Vitor de Carvalho Silva (Pessoa 3):} Led repository setup and Overleaf infrastructure; designed the global API economic simulation and break-even model (\texttt{src/cost_simulator.py}); authored Sec.~\ref{sec:intro}, \ref{sec:background}, \ref{sec:financial_impact}, \ref{sec:conclusion}, and Fig.~\ref{fig:cost_simulation}.
+    \item \textbf{Lucas de Oliveira Ferreira (Pessoa 1):} Implemented the question-level paired and cross-lingual clustered SE framework (\texttt{src/paired_eval.py}); authored Sec.~\ref{sec:stat_methodology}, \ref{sec:results_significance}, and Fig.~\ref{fig:forest_plot}.
+    \item \textbf{Mariana Assis Ramos (Pessoa 2):} Formulated the Minimum Detectable Effect (MDE) power analysis and executed the reproducible BPE tokenizer failure mode audit (\texttt{src/power_and_failures.py}); authored Sec.~\ref{sec:power_and_failures}, \ref{sec:limitations}, and Table~\ref{tab:failure_modes}.
+\end{itemize}

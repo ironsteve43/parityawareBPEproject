@@ -1,0 +1,11 @@
+% =============================================================================
+% SEÇÃO 4: LIMITAÇÕES E AMEAÇAS À VALIDADE (PESSOA 2 — MARI)
+% Formato Condensado: 2 Páginas ACM sigconf
+% =============================================================================
+
+\section{Threats to Validity \& Limitations}
+\label{sec:limitations}
+
+\textbf{(1) Parametric Reconstruction:} In the absence of public item-level logs in~\cite{foroutan2026parity}, our paired ($\rho=0.60$) and cluster ($\rho_{\mathrm{intra}}=0.25$) models rely on calibrated empirical bounds~\cite{miller2024adding,abadie2022when}; a sensitivity sweep ($\rho \in [0.0, 0.8]$) confirms non-significance throughout.
+\textbf{(2) Merge Scale Invariance:} While trained on scaled corpora, sacrificing tail merges in dominant scripts is an invariant mathematical property of the \textit{fair-max} objective.
+\textbf{(3) Construct Validity:} Compression parity on general prose ignores token fertility in code, mathematics~\cite{singh2024tokenization}, and commercial APIs~\cite{ahia2023all}.

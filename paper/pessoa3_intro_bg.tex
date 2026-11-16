@@ -1,68 +1,25 @@
 % =============================================================================
-% PESSOA 3 — INTRODUÇÃO (SEÇÃO 1) & BACKGROUND E MOTIVAÇÃO (SEÇÃO 2)
-% Padrão: ACM sigconf (\documentclass[sigconf]{acmart})
-% Contém versão em Inglês (padrão ACM/ACL) e versão em Português logo abaixo.
+% SEÇÃO 1: INTRODUÇÃO & SEÇÃO 2: BACKGROUND (PESSOA 3 — JOÃO)
+% Formato Condensado: 2 Páginas ACM sigconf
 % =============================================================================
-
-% -----------------------------------------------------------------------------
-% [VERSÃO 1: INGLÊS — PADRÃO ACM SIGCONF]
-% -----------------------------------------------------------------------------
 
 \section{Introduction}
 \label{sec:intro}
 
-Subword tokenization via Byte-Pair Encoding (BPE) serves as the foundational discrete interface of modern Large Language Models (LLMs). However, standard frequency-driven BPE tokenizers learned over multilingual corpora introduce severe structural inequities across human languages~\cite{petrov2023language,ahia2023all}. Because high-resource Latin-script languages (predominantly English) dominate pre-training corpora, vocabulary merges disproportionately represent English subwords, granting English high compression efficiency ($\sim$3.8--4.2 characters/token). In contrast, low-resource and non-Latin scripts (e.g., Tamil, Telugu, Persian, Arabic) suffer from extreme subword fragmentation ($\le$1.5 characters/token), imposing a compounding ``token tax'' that inflates latency, memory footprints, and inference costs~\cite{ahia2023all,nllb2022no}.
+Subword tokenization via Byte-Pair Encoding (BPE) introduces severe cross-lingual inequities in Large Language Models (LLMs)~\cite{petrov2023language,ahia2023all}. Pre-training frequency biases allocate disproportionate merges to English ($\sim$4.0 chars/token), forcing low-resource and non-Latin scripts (e.g., Tamil, Persian) to pay an exorbitant ``token tax'' in compute, latency, and API costs ($\le$1.5 chars/token)~\cite{ahia2023all,nllb2022no}.
 
-To rectify this imbalance, Foroutan et al.~\cite{foroutan2026parity} introduced \textit{Parity-Aware BPE} (PA-BPE). By replacing greedy global frequency merging with a \textit{fair-max} objective that greedily optimizes the compression of the currently worst-compressed language, the authors claim to reduce cross-lingual tokenization inequality (measured by the Gini coefficient) by up to $89\%$ without degrading downstream task accuracy, requiring only a modest compression loss in English.
+To mitigate this, Foroutan et al.~\cite{foroutan2026parity} proposed \textit{Parity-Aware BPE} (PA-BPE). By replacing greedy global merging with a \textit{fair-max} criterion targeting the worst-compressed script, they claim an $89\%$ Gini inequality reduction without downstream degradation, at minor English compression cost.
 
-In this work, we conduct an independent three-pronged audit of PA-BPE, combining the official open-source codebase~\cite{foroutan2026parity} with the rigorous super-population statistical framework of Miller~\cite{miller2024adding}. Specifically, we address three foundational questions that execute entirely on standard CPU/Google Colab environments without requiring multi-GPU pre-training:
-\begin{enumerate}
-    \item \textbf{Statistical Significance (Sec.~\ref{sec:results_significance}):} Are the reported downstream accuracy variations between PA-BPE and Classical BPE statistically meaningful or merely stochastic noise? By accounting for question-level pairing and cross-lingual clustering across translated benchmarks~\cite{miller2024adding}, we find that zero of the 22 languages exhibit statistically significant differences ($p > 0.05$).
-    \item \textbf{Statistical Power \& Failure Modes (Sec.~\ref{sec:power_and_failures}):} Were the benchmarks sufficiently powered to detect regressions? We demonstrate that $100\%$ of evaluated languages are severely underpowered ($\mathrm{MDE} \gg 2\%$), while the \textit{fair-max} rule induces catastrophic over-segmentation ($+62.5\%$ to $+330\%$) in code, numeric arithmetic, and structured JSON payloads.
-    \item \textbf{Global API Economics \& Break-Even (Sec.~\ref{sec:financial_impact}):} What is the net commercial cost in dollars? By tokenizing FLORES-200~\cite{goyal2022flores} and weighting token counts against empirical web traffic (W3Techs~\cite{w3techs2024languages}) and commercial API pricing (GPT-4o~\cite{openai2024gpt4o}, Claude 3.5~\cite{anthropic2024claude}, Llama 3.1~\cite{meta2024llama3}), we uncover an asymmetric ``English Tax'' that turns PA-BPE into a net financial penalty under all realistic traffic conditions.
-\end{enumerate}
+We present an independent empirical and economic audit of PA-BPE, combining its codebase~\cite{foroutan2026parity} with the super-population framework of Miller~\cite{miller2024adding}:
+\begin{itemize}
+    \item \textbf{Downstream Significance (Sec.~\ref{sec:results_significance}):} Downstream accuracy claims dissolve under question-level pairing and cross-lingual clustering ($p > 0.05$ across all 22 languages).
+    \item \textbf{Power \& Failure Modes (Sec.~\ref{sec:power_and_failures}):} Evaluation benchmarks are universally underpowered ($\mathrm{MDE} \pm 9.9\%$), while PA-BPE fragments code, math, and structured JSON ($+62\%$ to $+330\%$).
+    \item \textbf{Global API Economics (Sec.~\ref{sec:financial_impact}):} On real web traffic (W3Techs), the ``English Tax'' decisively outweighs multilingual savings, generating a net commercial loss unless English traffic drops below $35.5\%$.
+\end{itemize}
 
-
-\section{Background \& Motivation}
+\section{Background \& Evaluation Paradox}
 \label{sec:background}
 
-\subsection{Classical BPE vs. Parity-Aware BPE}
-Classical BPE iteratively merges the globally most frequent adjacent symbol pair:
-\begin{equation}
-(p_1^*, p_2^*) = \arg\max_{(p_1, p_2)} \sum_{l=1}^{L} \mathrm{Count}_l(p_1, p_2).
-\label{eq:classic_bpe}
-\end{equation}
-Because corporate pre-training mixes assign $\ge 50\%$ of token allocations to English, Eq.~\ref{eq:classic_bpe} naturally expends the fixed merge budget $V$ on English morphology. To enforce equity, PA-BPE (\textit{Fair-Max})~\cite{foroutan2026parity} dynamically selects the language $l^*$ with the minimum compression ratio $\mathrm{CR}_l = |\mathcal{C}_l|_{\mathrm{chars}} / |\mathcal{C}_l|_{\mathrm{tokens}}$:
-\begin{equation}
-l^* = \arg\min_{l \in \{1,\dots,L\}} \mathrm{CR}_l, \quad
-(p_1^*, p_2^*) = \arg\max_{(p_1, p_2) \in \mathcal{P}_{l^*}} \mathrm{Gain}_{l^*}(p_1, p_2).
-\label{eq:fair_max}
-\end{equation}
-To prevent collapse on small languages, the authors propose a \textit{Hybrid} variant that executes Phase-1 globally ($V_1$ merges) before initiating Phase-2 \textit{fair-max} reallocation ($V_2$ merges).
+While classical BPE greedily merges the globally most frequent pairs $\sum_l \mathrm{Count}_l(p_1, p_2)$, PA-BPE's \textit{fair-max} reallocates merges dynamically to the language with the minimum compression ratio $\mathrm{CR}_l = |\mathcal{C}_l|_{\mathrm{chars}} / |\mathcal{C}_l|_{\mathrm{tokens}}$. 
 
-\subsection{Super-Population Inference in LLM Evals}
-Standard LLM evaluation pipelines frequently report isolated sample standard errors $\hat{\mu} \pm 1.96 \cdot \mathrm{SE}$, assuming independent and identically distributed (i.i.d.) observations. As demonstrated by Miller~\cite{miller2024adding}, this practice creates severe internal validity flaws. When evaluating two tokenizers on identical benchmark prompts, pairing reduces estimator variance via positive covariance. Crucially, when benchmark items are parallel translations of the same question across languages or share a reading passage (e.g., \textit{Belebele}, \textit{XNLI}, \textit{MMMLU}), treating them as independent violates the Central Limit Theorem. Cross-lingual clustering must be applied to prevent severe underestimation of uncertainty.
-
-\subsection{The Economic Paradox of Tokenization Fairness}
-While compression parity is framed as an architectural and moral desideratum, frontier LLMs are commercialized via per-token billing APIs~\cite{ahia2023all,openai2024gpt4o}. If an algorithm degrades English compression by $8.5\%$ to improve Tamil compression by $18.5\%$, the net economic balance depends entirely on the traffic distribution. Because English accounts for $\sim 50\%$ of web text while Tamil represents $\sim 0.05\%$, reallocation creates a structural economic asymmetry that has remained unexamined until now.
-
-
-% =============================================================================
-% [VERSÃO 2: PORTUGUÊS — CASO O RELATÓRIO SEJA ENTREGUE EM PORTUGUÊS]
-% =============================================================================
-
-% \section{Introdução (Seção 1)}
-% \label{sec:intro_pt}
-%
-% A tokenização por subpalavras via Byte-Pair Encoding (BPE) constitui a interface discreta fundamental dos Grandes Modelos de Linguagem (LLMs). Contudo, tokenizadores BPE clássicos guiados puramente pela frequência global em corpora multilíngues introduzem disparidades estruturais severas entre idiomas~\cite{petrov2023language,ahia2023all}. Como línguas com escrita latina de alto recurso (especialmente o inglês) dominam amplamente os dados de pré-treino, a fusão de vocabulário privilegia morfemas do inglês, conferindo-lhe alta eficiência de compressão ($\sim$3.8--4.2 caracteres/token). Em contrapartida, escritas não-latinas e línguas de baixo recurso (como Tâmil, Telugu, Persa e Árabe) sofrem com fragmentação extrema ($\le$1.5 caracteres/token), pagando um ``imposto de tokenização'' que encarece custos de inferência, latência e memória~\cite{ahia2023all,nllb2022no}.
-%
-% Para equalizar essa disparidade, Foroutan et al.~\cite{foroutan2026parity} propuseram o \textit{Parity-Aware BPE} (PA-BPE). Substituindo o critério guloso clássico por um objetivo \textit{fair-max} que otimiza iterativamente a compressão do idioma com pior taxa atual, os autores sustentam reduzir a desigualdade de tokenização (medida pelo coeficiente de Gini) em até $89\%$ sem degradar a acurácia downstream, com uma perda marginal de compressão no inglês.
-%
-% Neste projeto, realizamos uma auditoria independente e reprodutível do PA-BPE, combinando o código aberto dos autores~\cite{foroutan2026parity} com a inferência estatística em super-população de Miller~\cite{miller2024adding}. Conduzimos essa análise em três eixos experimentais que rodam integralmente em CPU/Google Colab gratuito: (1) Auditoria de Significância Downstream com Pareamento e Erro Padrão Agrupado por Cluster; (2) Análise de Poder Estatístico (MDE) e Mapeamento de Modos de Falha em código, matemática e JSON; e (3) Simulação Financeira de Custo Líquido Global e Ponto de Break-Even em APIs comerciais.
-%
-% \section{Fundamentação Teórica e Motivação (Seção 2)}
-% \label{sec:background_pt}
-%
-% O BPE clássico funde pares de símbolos adjacentes mais frequentes no corpus conjunto (Eq.~\ref{eq:classic_bpe}). O PA-BPE Híbrido aloca uma fração inicial globalmente e reserva a fase seguinte para o algoritmo \textit{fair-max} (Eq.~\ref{eq:fair_max}), forçando merges no idioma com menor taxa de caracteres por token.
-%
-% Em avaliações de LLMs, Miller~\cite{miller2024adding} formalizou que comparações downstream que omitem o pareamento questão-a-questão ou violam a independência em benchmarks traduzidos (clusters de questões paralelas) distorcem as barras de erro. Do ponto de vista econômico, como as APIs cobram por token faturado~\cite{ahia2023all}, redistribuir tokens do inglês (50\% do tráfego web) para línguas de nicho (<0.1\%) gera um descompasso financeiro inevitável que quantificamos a seguir.
+However, evaluating fairness via isolated benchmark standard errors ($\hat{\mu} \pm \mathrm{SE}$) introduces severe validity flaws: it omits positive question-level pairing covariance ($\rho > 0$) and treats parallel translated instances of identical questions across languages as independent, violating the Central Limit Theorem~\cite{miller2024adding}.

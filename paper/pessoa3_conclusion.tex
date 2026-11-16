@@ -1,46 +1,32 @@
 % =============================================================================
-% PESSOA 3 — SEÇÃO 5 (CONCLUSÃO) & DECLARAÇÕES OBRIGATÓRIAS
-% Padrão: ACM sigconf (\documentclass[sigconf]{acmart})
-% Contém versão em Inglês (padrão ACM/ACL) e versão em Português comentada.
+% SEÇÃO 5: CONCLUSÃO (PESSOA 3 — JOÃO) + PÁGINA SUPLEMENTAR
+% Formato Condensado: 2 Páginas ACM sigconf + Página 3 para Referências/Declarações
 % =============================================================================
-
-% -----------------------------------------------------------------------------
-% [VERSÃO 1: INGLÊS — PADRÃO ACM SIGCONF]
-% -----------------------------------------------------------------------------
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, we presented an empirical, statistical, and economic audit of Parity-Aware BPE~\cite{foroutan2026parity} using Evan Miller's super-population framework~\cite{miller2024adding} and commercial API pricing. Our investigation yields three definitive conclusions:
-\begin{enumerate}
-    \item \textbf{Absence of Statistical Evidence for Parity:} Accounting for question-level pairing and cross-lingual clustering reveals that none of the 22 reported language differences are statistically significant ($p > 0.05$), with cross-lingual clustering inflating global uncertainty by $2.80\times$.
-    \item \textbf{Universal Statistical Under-Powering:} 100\% of the evaluation benchmarks lack sufficient statistical power to detect meaningful regressions of $1\%$ to $2\%$, averaging an MDE of $\pm 9.88\%$ (Thai: $\pm 5.58\%$; Persian: $\pm 18.29\%$). Simultaneously, algorithmic failure modes induce severe subword explosion ($+62.5\%$ to $+330\%$) in code, arithmetic, and structured JSON.
-    \item \textbf{The Hidden Economic Surcharge:} Because real-world web and API traffic is heavily dominated by English ($w_{\mathrm{en}} \approx 50\%$--$80\%$), the degradation of English compression creates an ``English Tax'' that decisively outweighs the token savings of low-resource languages. The break-even point requires $w_{\mathrm{en}} \le 35.5\%$, turning PA-BPE into an annual multi-thousand-dollar surcharge per billion requests in production environments.
-\end{enumerate}
-Future work on tokenization equity must avoid zero-sum vocabulary reallocation; scalable fairness requires tokenizer-free byte-level architectures or modular script-specific sub-vocabularies.
-
+Our audit of Parity-Aware BPE yields three findings:
+(1) Downstream parity claims lack statistical support; clustering inflates uncertainty by $2.80\times$, rendering all 22 language variations indistinguishable from noise ($p > 0.05$).
+(2) Evaluation benchmarks are severely underpowered ($\mathrm{MDE} \pm 9.88\%$), masking severe over-segmentation ($+62\%$ to $+330\%$) in code, arithmetic, and structured JSON.
+(3) Under real web traffic, the ``English Tax'' dominates multilingual savings, imposing a net commercial penalty breaking even only when English drops below $35.5\%$.
+Cross-lingual fairness requires tokenizer-free byte-level architectures rather than zero-sum vocabulary reallocation.
 
 % =============================================================================
-% MANDATORY SUPPLEMENTARY SECTIONS (OUTSIDE 2-PAGE LIMIT)
+% PÁGINA SUPLEMENTAR (FORA DO LIMITE DE 2 PÁGINAS)
+% Conforme especificação do projeto da disciplina:
+% "References are excluded from the page limit"
+% "The report must include a brief AI-assistance statement (excluded from page limit)"
+% "The final report should include a brief contribution statement"
 % =============================================================================
+\clearpage
 
 \section*{AI Assistance Disclosure}
-In accordance with course rubrics and academic standards, the authors declare that LLM-based assistance (specifically Google DeepMind's Gemini 3.8 model via Antigravity) was utilized during this project. AI assistance was restricted to: (1) scaffolding boilerplates for statistical formulas in Python, (2) assisting in typesetting Matplotlib visual styling and ACM LaTeX tables, and (3) grammatical polishing of draft prose. All mathematical derivations, statistical hypothesis testing (paired differences and clustered covariance formulations), empirical execution of tokenizers on CPU, data extraction from Foroutan et al., and financial modeling were designed, verified, and validated by the human co-authors.
+In accordance with course guidelines, the authors declare that Gemini 3.8 (via Antigravity) was used for scaffolding statistical formulas in Python, Matplotlib styling, and text condensation. All statistical derivations, empirical BPE failure extraction, economic modeling, and analysis were conceived, implemented, and verified by the authors.
 
 \section*{Authorship \& Contribution Statement}
-The co-authors contributed to this research audit in three coordinated roles:
 \begin{itemize}
-    \item \textbf{Joao Vitor de Carvalho Silva (Pessoa 3):} Project setup and repository infrastructure; implemented the global API cost simulation and break-even analysis (\texttt{src/cost_simulator.py}); authored the Introduction (Sec.~\ref{sec:intro}), Background (Sec.~\ref{sec:background}), Financial Results (Sec.~\ref{sec:financial_impact}), Conclusion (Sec.~\ref{sec:conclusion}), and Figure~\ref{fig:cost_simulation}.
-    \item \textbf{Lucas de Oliveira Ferreira (Pessoa 1):} Implemented the question-level paired difference test and cross-lingual clustered standard error audit (\texttt{src/paired_eval.py}); generated Figure~\ref{fig:forest_plot}; authored the Statistical Audit Methodology and Significance Results (Sec.~\ref{sec:stat_methodology} \& \ref{sec:results_significance}).
-    \item \textbf{Mariana Assis Ramos (Pessoa 2):} Formulated the Minimum Detectable Effect (MDE), statistical power, and sample size deficit calculations (\texttt{src/power_and_failures.py}); executed the BPE failure mode audit across technical domains; authored Sec.~\ref{sec:power_and_failures}, Sec.~\ref{sec:limitations}, Figure~\ref{fig:power_mde}, and Table~\ref{tab:failure_modes}.
+    \item \textbf{Joao Vitor de Carvalho Silva (Pessoa 3):} Led repository setup and Overleaf infrastructure; designed the global API economic simulation and break-even model (\texttt{src/cost_simulator.py}); authored Sec.~\ref{sec:intro}, \ref{sec:background}, \ref{sec:financial_impact}, \ref{sec:conclusion}, and Fig.~\ref{fig:cost_simulation}.
+    \item \textbf{Lucas de Oliveira Ferreira (Pessoa 1):} Implemented the question-level paired and cross-lingual clustered SE framework (\texttt{src/paired_eval.py}); authored Sec.~\ref{sec:stat_methodology}, \ref{sec:results_significance}, and Fig.~\ref{fig:forest_plot}.
+    \item \textbf{Mariana Assis Ramos (Pessoa 2):} Formulated the Minimum Detectable Effect (MDE) power analysis and executed the reproducible BPE tokenizer failure mode audit (\texttt{src/power_and_failures.py}); authored Sec.~\ref{sec:power_and_failures}, \ref{sec:limitations}, and Table~\ref{tab:failure_modes}.
 \end{itemize}
-
-
-% =============================================================================
-% [VERSÃO 2: PORTUGUÊS — CASO O RELATÓRIO SEJA ENTREGUE EM PORTUGUÊS]
-% =============================================================================
-
-% \section{Conclusão (Seção 5)}
-% \label{sec:conclusion_pt}
-%
-% Nossa auditoria do Parity-Aware BPE demonstra que: (1) as alegações de estabilidade de acurácia downstream carecem de significância estatística sob inferência agrupada; (2) os benchmarks são estatisticamente cegos a quedas de até $9.88\%$ de acurácia, enquanto o algoritmo estilhaça sintaxe de código e matemática; e (3) o método impõe um imposto financeiro líquido no mundo real, quebrando o equilíbrio econômico a menos que o tráfego em inglês caia abaixo de 35.5\%.

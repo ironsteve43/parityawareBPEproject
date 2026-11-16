@@ -1,0 +1,25 @@
+% =============================================================================
+% SEÇÃO 1: INTRODUÇÃO & SEÇÃO 2: BACKGROUND (PESSOA 3 — JOÃO)
+% Formato Condensado: 2 Páginas ACM sigconf
+% =============================================================================
+
+\section{Introduction}
+\label{sec:intro}
+
+Subword tokenization via Byte-Pair Encoding (BPE) introduces severe cross-lingual inequities in Large Language Models (LLMs)~\cite{petrov2023language,ahia2023all}. Pre-training frequency biases allocate disproportionate merges to English ($\sim$4.0 chars/token), forcing low-resource and non-Latin scripts (e.g., Tamil, Persian) to pay an exorbitant ``token tax'' in compute, latency, and API costs ($\le$1.5 chars/token)~\cite{ahia2023all,nllb2022no}.
+
+To mitigate this, Foroutan et al.~\cite{foroutan2026parity} proposed \textit{Parity-Aware BPE} (PA-BPE). By replacing greedy global merging with a \textit{fair-max} criterion targeting the worst-compressed script, they claim an $89\%$ Gini inequality reduction without downstream degradation, at minor English compression cost.
+
+We present an independent empirical and economic audit of PA-BPE, combining its codebase~\cite{foroutan2026parity} with the super-population framework of Miller~\cite{miller2024adding}:
+\begin{itemize}
+    \item \textbf{Downstream Significance (Sec.~\ref{sec:results_significance}):} Downstream accuracy claims dissolve under question-level pairing and cross-lingual clustering ($p > 0.05$ across all 22 languages).
+    \item \textbf{Power \& Failure Modes (Sec.~\ref{sec:power_and_failures}):} Evaluation benchmarks are universally underpowered ($\mathrm{MDE} \pm 9.9\%$), while PA-BPE fragments code, math, and structured JSON ($+62\%$ to $+330\%$).
+    \item \textbf{Global API Economics (Sec.~\ref{sec:financial_impact}):} On real web traffic (W3Techs), the ``English Tax'' decisively outweighs multilingual savings, generating a net commercial loss unless English traffic drops below $35.5\%$.
+\end{itemize}
+
+\section{Background \& Evaluation Paradox}
+\label{sec:background}
+
+While classical BPE greedily merges the globally most frequent pairs $\sum_l \mathrm{Count}_l(p_1, p_2)$, PA-BPE's \textit{fair-max} reallocates merges dynamically to the language with the minimum compression ratio $\mathrm{CR}_l = |\mathcal{C}_l|_{\mathrm{chars}} / |\mathcal{C}_l|_{\mathrm{tokens}}$. 
+
+However, evaluating fairness via isolated benchmark standard errors ($\hat{\mu} \pm \mathrm{SE}$) introduces severe validity flaws: it omits positive question-level pairing covariance ($\rho > 0$) and treats parallel translated instances of identical questions across languages as independent, violating the Central Limit Theorem~\cite{miller2024adding}.
