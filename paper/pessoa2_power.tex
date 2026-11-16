@@ -8,7 +8,8 @@
 
 Showing that downstream differences are statistically indistinguishable from zero ($p > 0.05$) does not prove equivalence unless the evaluation possesses sufficient statistical power to detect meaningful regressions. Following Miller (Section~5)~\cite{miller2024adding} and cluster-inference theory~\cite{abadie2022when}, we compute the Minimum Detectable Effect (MDE) at $80\%$ power ($1-\beta=0.80, z_{0.80}=0.842$) and two-sided $\alpha=0.05$ ($z_{0.975}=1.960$), along with the required sample size $N_{\mathrm{req}}$ to detect a target accuracy drop $\Delta$:
 \begin{equation}
-\mathrm{MDE} = (z_{1-\alpha/2} + z_{1-\beta})\,\mathrm{SE}_{A-B,\mathrm{clustered}}, \quad
+\mathrm{MDE} = (z_{1-\alpha/2} + z_{1-\beta})\,\mathrm{SE}_{A-B,\mathrm{clustered}},
+\label{eq:mde_def}
 \end{equation}
 \begin{equation}
 N_{\mathrm{req}}(\Delta) = \frac{2(z_{1-\alpha/2} + z_{1-\beta})^2 (1-\rho)\,p(1-p)\,\mathrm{DEFF}}{\Delta^2}.
@@ -28,28 +29,28 @@ N_{\mathrm{req}}(\Delta) = \frac{2(z_{1-\alpha/2} + z_{1-\beta})^2 (1-\rho)\,p(1
 
 \begin{table}[t]
 \centering
-\caption{Algorithmic failure modes of Parity-Aware BPE (Hybrid Fair-Max)~\cite{foroutan2026parity} vs.\ Classical BPE under \texttt{Whitespace()} pre-tokenization. Phase-1 global merges preserve common tokens, whereas Phase-2 \textit{fair-max} reallocation fragments high-resource long-tail morphemes and digits.}
+\caption{Illustrative tokenization comparison from a controlled mini-corpus experiment ($365$ total merges: $140$ global + $225$ \textit{fair-max}) replicating the \texttt{Whitespace()} + Hybrid PA-BPE logic~\cite{foroutan2026parity}. Counts reflect micro-scale mechanics rather than 128k production vocabularies.}
 \vspace{-0.6em}
 \footnotesize
 \setlength{\tabcolsep}{2.8pt}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Domain / Failure Mode} & \textbf{Classical} & \textbf{PA-Hybrid} & \textbf{Ratio} & \textbf{Overhead} \\
+\textbf{Domain / Test Case} & \textbf{Classical} & \textbf{PA-Hybrid} & \textbf{Ratio} & \textbf{Diff.} \\
 \midrule
-Code Syntax (Python)       & 16 & 26 & 1.62 & $+62.5\%$  \\
-Mathematical / Numeric     & 19 & 37 & 1.95 & $+94.7\%$  \\
-Structured JSON / API      & 23 & 52 & 2.26 & $+126.1\%$ \\
-German Compound Nouns      & 12 & 35 & 2.92 & $+191.7\%$ \\
-English STEM Terminology   & 10 & 43 & 4.30 & $+330.0\%$ \\
+Code Syntax (Python)       & 16 & 26 & $1.62\times$ & $+62.5\%$  \\
+Mathematical / Numeric     & 19 & 37 & $1.95\times$ & $+94.7\%$  \\
+Structured JSON / API      & 23 & 52 & $2.26\times$ & $+126.1\%$ \\
+German Compound Nouns      & 12 & 35 & $2.92\times$ & $+191.7\%$ \\
+English STEM Terminology   & 10 & 43 & $4.30\times$ & $+330.0\%$ \\
 \bottomrule
 \end{tabular}
 \vspace{-0.8em}
 \label{tab:failure_modes}
 \end{table}
 
-\textbf{Tokenization Failure Modes in Specialized Domains:} To understand where PA-BPE's compression loss manifests structurally, we execute both Classical BPE and Hybrid PA-BPE (\textit{fair-max}, Eq.~6 of~\cite{foroutan2026parity}) with the official \texttt{Whitespace()} pre-tokenizer across five technical domains (Table~\ref{tab:failure_modes}). While Phase-1 global merges preserve top-frequency keywords (\texttt{def}, \texttt{return}, \texttt{and}, \texttt{und}), Phase-2 reallocates tail merges toward low-resource scripts (Tamil, Telugu, Korean, Persian), inducing severe over-segmentation in structured inputs:
+\textbf{Illustrative Mini-Corpus Experiment on Failure Modes:} Because the official repository~\cite{foroutan2026parity} provides training scripts without hosting the pre-trained 128k-merge \texttt{vocab.json} artifacts---and full web-scale training exceeds our computational budget---we construct a controlled, synthetic multilingual mini-corpus ($365$ merges) to observe how Classical BPE and Hybrid PA-BPE (\textit{fair-max}, Eq.~6 of~\cite{foroutan2026parity}) behave on identical inputs under \texttt{Whitespace()} pre-tokenization. We assign heuristic frequency weights across three tiers: high-frequency function words/keywords, intermediate technical/domain terms, and lower-frequency texts in low-resource scripts (Tamil, Telugu, Korean, Persian, Thai). Rather than estimating exact production overheads, Table~\ref{tab:failure_modes} illustrates the structural trade-off between phases: Phase-1 global merges ($140$ merges) preserve common keywords (\texttt{def}, \texttt{return}, \texttt{and}, \texttt{und}), whereas Phase-2 ($225$ merges) reallocates merges to worst-compressed scripts, leaving intermediate technical terms fragmented:
 \begin{itemize}
-    \item \textbf{Code \& Structured JSON ($+62.5\%$ to $+126.1\%$ overhead):} Domain identifiers (\texttt{calculate} $\rightarrow$ \texttt{c|al|c|ul|at|e}) and JSON schema keys/enums (\texttt{transaction}, \texttt{PENDING\_VERIFICATION}) shatter into character fragments, inflating KV-cache memory and structured decoding latency~\cite{petrov2023language,ahia2023all}.
-    \item \textbf{Numbers \& Arithmetic (1.95 tokens):} Classical BPE consolidates recurring 3-digit blocks (\texttt{141|592|653}), whereas PA-BPE fragments decimal mantissas into single and paired digits (\texttt{1|4|1|59|2...}), impairing positional alignment in multi-digit arithmetic~\cite{singh2024tokenization}.
-    \item \textbf{German Compounds \& STEM (2.92 to 4.30 tokens):} Productive German compound roots (\texttt{schiff|fahrts} $\rightarrow$ \texttt{sch|if|f|f|a|h|r|ts}) and Latin/Greek STEM morphemes (\texttt{neuro|degenerative} $\rightarrow$ 12 sub-tokens) lose morphological coherence, explaining localized NLU variance~\cite{foroutan2026parity}.
+    \item \textbf{Code \& Structured JSON:} While \texttt{def} and \texttt{scores} remain intact from Phase~1, domain identifiers (\texttt{calculate} $\rightarrow$ \texttt{c|al|c|ul|at|e}) and JSON schema keys (\texttt{transaction}, \texttt{PENDING\_VERIFICATION}) split into sub-syllabic pieces, illustrating how tail reallocation can inflate sequence length~\cite{petrov2023language,ahia2023all}.
+    \item \textbf{Numbers \& Arithmetic:} Classical BPE consolidates recurring 3-digit chunks (\texttt{141|592|653}) in our micro-corpus, whereas PA-BPE fragments decimal mantissas mostly into isolated digits (\texttt{1|4|1|59|2...}), a pattern known to impair positional alignment in multi-digit arithmetic~\cite{singh2024tokenization}.
+    \item \textbf{German Compounds \& STEM:} Common connectors (\texttt{und}, \texttt{and}) survive Phase~1, but productive German compound roots (\texttt{schiff|fahrts} $\rightarrow$ \texttt{sch|if|f|f|a|h|r|ts}) and Latin/Greek STEM morphemes (\texttt{neuro|degenerative} $\rightarrow$ 12 sub-tokens) lose Phase-2 merges to low-resource alphabets, breaking morphological boundaries.
 \end{itemize}
