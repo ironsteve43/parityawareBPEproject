@@ -15,9 +15,9 @@
 
 | Integrante | Papel | Seções no Artigo | Módulos Desenvolvidos | Artefatos Gerados |
 | :--- | :--- | :--- | :--- | :--- |
-| **João Vitor de Carvalho Silva** | **Pessoa 3** (Líder / Infra / Finanças) | Seção 1 (Intro), Seção 2 (Background), Seção 3.3 (Finanças), Seção 5 (Conclusão), Declarações | `src/cost_simulator.py`, `requirements.txt`, `README.md`, template Overleaf | **Gráfico 3** (`fig3_cost_simulation.pdf/png`), Tabelas de Break-Even e impacto em USD |
 | **Lucas de Oliveira Ferreira** | **Pessoa 1** (Inferência Estatística) | Seção 3.1 (Metodologia e Resultados de Significância Downstream) | `src/paired_eval.py` | **Gráfico 1** (`fig1_forest_plot.pdf/png`), Tabela pareada e clusterizada por idioma |
 | **Mariana Assis Ramos** | **Pessoa 2** (Poder Estatístico & Falhas) | Seção 3.2 (Poder Estatístico & Casos de Falha), Seção 4 (Ameaças à Validade) | `src/power_and_failures.py` | **Gráfico 2** (`fig2_power_mde.pdf/png`), **Tabela 1** (Falhas de Tokenização BPE) |
+| **João Vitor de Carvalho Silva** | **Pessoa 3** (Infra / Finanças) | Seção 1 (Intro), Seção 2 (Background), Seção 3.3 (Finanças), Seção 5 (Conclusão), Declarações | `src/cost_simulator.py`, `requirements.txt`, `README.md`, template Overleaf | **Gráfico 3** (`fig3_cost_simulation.pdf/png`), Tabelas de Break-Even e impacto em USD |
 
 ---
 
