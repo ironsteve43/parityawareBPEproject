@@ -11,7 +11,7 @@
 
 ---
 
-## 👥 Equipe e Divisão de Responsabilidades
+## Equipe e Divisão de Responsabilidades
 
 | Integrante | Papel | Seções no Artigo | Módulos Desenvolvidos | Artefatos Gerados |
 | :--- | :--- | :--- | :--- | :--- |
@@ -21,7 +21,7 @@
 
 ---
 
-## 🎯 Proposta e Resumo Executivo
+## Proposta e Resumo Executivo
 
 O artigo *Parity-Aware BPE* (Foroutan et al., ACL 2026) sustenta que a substituição do critério guloso de merges pelo objetivo dinâmico ***fair-max*** equaliza as taxas de compressão entre idiomas (reduzindo a desigualdade medida pelo Gini em até $89\%$) sem degradar a acurácia dos modelos em benchmarks multilíngues, ao custo de uma perda marginal de compressão no inglês.
 
@@ -43,7 +43,7 @@ Este projeto coloca essa alegação à prova através de uma **auditoria experim
 
 ---
 
-## 🔬 As Três Frentes da Auditoria
+## As Três Frentes da Auditoria
 
 ### 1. Auditoria de Significância Estatística (Pessoa 1 — Lucas)
 - **O Problema:** A Tabela 2 de Foroutan et al. reporta médias com erros padrão isolados ($\hat{\mu} \pm \mathrm{SE}$), comparando barras não-pareadas ($\mathrm{SE}_{\mathrm{unpaired}} = \sqrt{\mathrm{SE}_A^2 + \mathrm{SE}_B^2}$, Eq. 5 de Miller). Essa abordagem introduz dois vícios metodológicos:
@@ -82,7 +82,7 @@ Este projeto coloca essa alegação à prova através de uma **auditoria experim
 
 ---
 
-## 📊 Síntese dos Resultados Experimentais
+## Síntese dos Resultados Experimentais
 
 | Métrica Auditada | Classical BPE | Parity-Aware BPE (Hybrid) | Impacto / Veredito da Auditoria |
 | :--- | :---: | :---: | :--- |
@@ -101,7 +101,7 @@ Este projeto coloca essa alegação à prova através de uma **auditoria experim
 
 ---
 
-## 📁 Estrutura do Repositório
+## Estrutura do Repositório
 
 ```
 parityawareBPEproject/
@@ -143,7 +143,7 @@ parityawareBPEproject/
 
 ---
 
-## 🚀 Instruções de Reprodução
+## Instruções de Reprodução
 
 Todo o pipeline roda **100% em CPU padrão** (Linux, Windows, macOS) ou no Google Colab gratuito em menos de 1 minuto.
 
@@ -192,7 +192,7 @@ python src/paired_eval.py && python src/power_and_failures.py && python src/cost
 
 ---
 
-## 📝 Compilação no Overleaf (Template ACM sigconf)
+## Compilação no Overleaf (Template ACM sigconf)
 
 O artigo foi formatado rigorosamente no padrão da ACM Conference Proceedings (`\documentclass[sigconf,nonacm]{acmart}`), ocupando 2 páginas de conteúdo técnico mais páginas extras para referências e declarações.
 
@@ -204,7 +204,7 @@ O artigo foi formatado rigorosamente no padrão da ACM Conference Proceedings (`
 
 ---
 
-## 📜 Licença e Citação
+## Licença e Citação
 
 Este projeto é disponibilizado sob a licença MIT. Para citar este trabalho:
 
